@@ -21,7 +21,7 @@ type Config struct {
 
 func readConfig() Config {
 	configFile := os.Getenv("TRELLOMIX_CONFIG")
-	if "" != configFile {
+	if "" == configFile {
 		configFile = "config.json"
 	}
 	fmt.Println("TRELLOMIX_CONFIG: ", configFile)
