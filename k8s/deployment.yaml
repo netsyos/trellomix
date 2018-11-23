@@ -1,0 +1,46 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: trellomix
+spec:
+  schedule: "30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: trellomix
+              image: netsyos/trellomix:latest
+              env:
+                - name: TRELLOMIX_CONFIG
+                  value: "/data/container_config/config-trellomix/config.json"
+              volumeMounts:
+                - mountPath: /data/container_config
+                  name: trellomix-config
+          volumes:
+            - name: trellomix-config
+              gitRepo:
+                repository: "https://username:key@bitbucket.org/some_private_repos/config-trellomix.git"
+          restartPolicy: Never
+
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#  name: trellomix
+# spec:
+#  template:
+#    spec:
+#       containers:
+#         - name: trellomix
+#           image: netsyos/trellomix:latest
+#           env:
+#             - name: TRELLOMIX_CONFIG
+#               value: "/data/container_config/config-trellomix/config.json"
+#           volumeMounts:
+#             - mountPath: /data/container_config
+#               name: trellomix-config
+#       volumes:
+#         - name: trellomix-config
+#           gitRepo:
+#             repository: "https://username:key@bitbucket.org/some_private_repos/config-trellomix.git"
+#       restartPolicy: Never
